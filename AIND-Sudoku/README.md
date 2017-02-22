@@ -3,7 +3,12 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *answer*
+A: 
+So my advice is to give the best answer you can. Here are some tips:
+
+Don't assume the reader knows what the terms constraint propagation and naked twins mean. While talking on Slack and reviewing projects, I have seen that many students implement the algorithm without themselves knowing what naked twins actually are. So be sure to define what they are and how you find them.
+
+Explain how finding naked twins helps you solve the puzzle more easily using constraint propagation (this is where you'll basically be describing what constraint propagation is and how identifying naked twins affects other boxes in the puzzle).
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
