@@ -216,7 +216,7 @@ class CustomPlayer:
         legal_moves = game.get_legal_moves() 
         # check if no more moves available
         if not legal_moves: return self.score(game, self), best_move
-        # recursive minimax for legal_moves
+        # recursive minimax search in legal_moves
         for tmp_move in legal_moves:
             # get score
             tmp_score, _ = self.minimax(game.forecast_move(tmp_move), depth - 1, not maximizing_player)
@@ -273,16 +273,10 @@ class CustomPlayer:
         # check for the bottom of the tree 
         if depth is 0: return self.score(game, self), best_move
         # get active player moves
-        #legal_moves = game.get_legal_moves() 
-        # check if no more moves available
-        if not game.get_legal_moves(): return self.score(game, self), best_move
-        
-        # get active player moves
         legal_moves = game.get_legal_moves() 
         # check if no more moves available
-        if not legal_moves: return self.score(game, self), best_move
-        
-        # recursive alphabeta for legal_moves
+        if not legal_moves: return self.score(game, self), best_move      
+        # recursive alphabeta search in legal_moves
         for tmp_move in legal_moves:
             # get score
             tmp_score, _ = self.alphabeta(game.forecast_move(tmp_move), depth - 1, alpha, beta, not maximizing_player)
