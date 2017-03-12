@@ -161,7 +161,7 @@ class CustomPlayer:
                     depth += 1
             # fixed-depth search in case of no iterative deepening is chosen
             else:
-                best_score, best_move = self.minimax(game, self.search_depth)
+                best_score, best_move = optimizer_meth(game, self.search_depth)
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
