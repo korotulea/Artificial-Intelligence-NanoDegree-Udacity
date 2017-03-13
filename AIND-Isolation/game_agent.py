@@ -6,15 +6,235 @@ augment the test suite with your own test cases to further test your code.
 You must test your agent's strength against a set of agents with known
 relative strength using tournament.py and include the results in your report.
 """
-import random
-
+import random, math
 
 class Timeout(Exception):
     """Subclass base exception for code clarity."""
     pass
 
+# define different heuristics functions
+def heuristic_simple_weighted(game, player):
+    """
+    This evaluation function outputs a score equal to the difference 
+    in the number of moves available to the two players weighted to the 
+    number of empty spaces:
+    (own_moves - opponent moves ) / (num empty spaces + 1):
+    """ 
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")
+    # count avaliable legal moves for each player
+    own_moves = float(len(game.get_legal_moves(player)))
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return (own_moves - opp_moves) / (empty_spaces + 1.0)
 
-def custom_score(game, player):
+def heuristic_simple_weighted_inv(game, player):
+    """
+    This evaluation function outputs a score equal to the difference 
+    in the number of moves available to the two players weighted to the 
+    inverse number of empty spaces:
+    (own_moves - opponent moves ) * (num empty spaces + 1):
+    """ 
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")
+    # count avaliable legal moves for each player
+    own_moves = float(len(game.get_legal_moves(player)))
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return (own_moves - opp_moves) * (empty_spaces + 1.0)
+    
+def heuristics_offensive(game, player):
+    """
+    This evaluation function discussed in lecture that outputs a
+    score equal to the difference in the number of moves available to 
+    active player and double of avaliable moves to the opponent player:
+    own_moves - 2 * opponent moves  
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # count avaliable legal moves for each player
+    own_moves = float(len(game.get_legal_moves(player)))
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    return own_moves - 2 * opp_moves
+
+def heuristics_offensive_weighted(game, player):
+    """
+    This evaluation function outputs a score equal to the difference in 
+    the number of moves available to active player and double of avaliable 
+    moves to the opponent player weighted to the number of empty spaces:
+    (own_moves - 2 * opponent moves ) / (num empty spaces + 1.)
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # count avaliable legal moves for each player
+    own_moves = float(len(game.get_legal_moves(player)))
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return (own_moves - 2 * opp_moves) / (empty_spaces + 1.0)
+
+def heuristics_offensive_weighted_inv(game, player):
+    """
+    This evaluation function outputs a score equal to the difference in 
+    the number of moves available to active player and double of avaliable 
+    moves to the opponent player weighted to the number of empty spaces:
+    (own_moves - 2 * opponent moves ) / (num empty spaces + 1.)
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # count avaliable legal moves for each player
+    own_moves = float(len(game.get_legal_moves(player)))
+    opp_moves = float(len(game.get_legal_moves(game.get_opponent(player))))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return (own_moves - 2 * opp_moves) * (empty_spaces + 1.0)
+
+def heuristics_proximity_min(game, player):
+    """ 
+    This evaluation function minimizing Euclidian distance between players 
+    and outputs a score equal to the inverse of the Euclidian distance:
+    1. / sqrt((x2 - x1)^2c+ (y2 - y1)^2)
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    return 1. / euclidian_dist
+
+def heuristics_proximity_min_weighted(game, player):
+    """ 
+    This evaluation function minimizing Euclidian distance between players 
+    and outputs a score equal to the inverse of the Euclidian distance 
+    weighted by empty spaces:
+    1.0 / ((num empty spaces + 1.) * sqrt((x2 - x1)^2 + (y2 - y1)^2))
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return 1. / (euclidian_dist * (empty_spaces + 1.))
+
+def heuristics_proximity_min_weighted_inv(game, player):
+    """ 
+    This evaluation function minimizing Euclidian distance between players 
+    and outputs a score equal to the inverse of the Euclidian distance 
+    weighted by inverse of empty spaces:
+    (num empty spaces + 1.) / sqrt((x2 - x1)^2 + (y2 - y1)^2)
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return (empty_spaces + 1.) / euclidian_dist
+
+def heuristics_proximity_max(game, player):
+    """ 
+    This evaluation function maximizing Euclidian distance between players 
+    and outputs a score equal to the Euclidian distance:
+    sqrt((x2 - x1)^2 + (y2 - y1)^2)
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    return euclidian_dist
+
+def heuristics_proximity_max_weighted(game, player):
+    """ 
+    This evaluation function maximizing Euclidian distance between players 
+    and outputs a score equal to the Euclidian distance weighted by 
+    of empty spaces:
+    sqrt((x2 - x1)^2 + (y2 - y1)^2) / (num empty spaces + 1.)
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return euclidian_dist / (empty_spaces + 1)
+
+def heuristics_proximity_max_weighted_inv(game, player):
+    """ 
+    This evaluation function maximizing Euclidian distance between players 
+    and outputs a score equal to the Euclidian distance weighted by inverse
+    of empty spaces:
+    sqrt((x2 - x1)^2 + (y2 - y1)^2) * (num empty spaces + 1.)
+    
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")    
+    # get coordinates
+    own_loc = game.get_player_location(player)
+    opp_loc = game.get_player_location(game.get_opponent(player))
+    # calculate Euclidian distance
+    euclidian_dist = float(math.sqrt((opp_loc[0]-own_loc[0])**2+(opp_loc[1]-own_loc[1])**2))
+    # count empty spaces on the board
+    empty_spaces = len(game.get_blank_spaces())
+    return euclidian_dist * (empty_spaces + 1)
+
+def heuristic_simple_deeper(game, player):
+    """
+    The evaluation function that outputs a score equal to 
+    the difference in the number of sum of all moves moves available to the
+    two players at one level deeper:
+    sum of own_moves and next depth - sum of opponent moves and next depth
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")
+    # count avaliable legal moves for each player
+    own_moves_list = [float(len(game.forecast_move(move).get_legal_moves(player)))
+                      for move in game.get_legal_moves(player)]
+    opp_moves_list = [float(len(game.forecast_move(move).get_legal_moves(game.get_opponent(player))))
+                   for move in game.get_legal_moves(game.get_opponent(player))]   
+    return sum(own_moves_list) - sum(opp_moves_list)
+
+def heuristic_offensive_deeper(game, player):
+    """
+    The "Improved" evaluation function that outputs a score equal to 
+    the difference in the number of sum of all moves moves available to the
+    activetwo players at one level deeper:
+    This evaluation function that outputs a score equal to the difference in 
+    the number of sum of all moves available to active player at one level deeper
+    and double of avaliable moves to the opponent player at one level deeper: 
+    sum of own_moves and next depth - 2 * sum of opponent moves and next depth
+    """
+    if game.is_loser(player): return float("-inf")
+    if game.is_winner(player): return float("inf")
+    # count avaliable legal moves for each player
+    own_moves_list = [float(len(game.forecast_move(move).get_legal_moves(player)))
+                      for move in game.get_legal_moves(player)]
+    opp_moves_list = [float(len(game.forecast_move(move).get_legal_moves(game.get_opponent(player))))
+                   for move in game.get_legal_moves(game.get_opponent(player))]   
+    return sum(own_moves_list) - 2 * sum(opp_moves_list)
+
+def custom_score(game, player, heuristic=heuristic_offensive_deeper):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 
@@ -35,11 +255,8 @@ def custom_score(game, player):
     -------
     float
         The heuristic value of the current game state to the specified player.
-    """
-
-    # TODO: finish this function!
-    raise NotImplementedError
-
+    """   
+    return heuristic(game, player)
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -127,8 +344,6 @@ class CustomPlayer:
         
         # if there are no available legal moves
         if not legal_moves: return self.no_move
-        # initialize worst case scenario best_score 
-        best_score = float("-inf")
         # initialize no move best_move 
         best_move = self.no_move
         # occupy the most winning positions at the beginning of the game
@@ -154,14 +369,13 @@ class CustomPlayer:
             if self.iterative:
                 depth = 0
                 while self.time_left() > self.TIMER_THRESHOLD:
-                    tmp_score, tmp_best_move = optimizer_meth(game, depth)
-                    # choose the max score
-                    best_score, best_move = max((best_score, best_move), (tmp_score, tmp_best_move))
+                    _, best_move = optimizer_meth(game, depth)
                     # go one step deeper
                     depth += 1
             # fixed-depth search in case of no iterative deepening is chosen
             else:
-                best_score, best_move = optimizer_meth(game, self.search_depth)
+                #best_score, best_move = optimizer_meth(game, self.search_depth)
+                _, best_move = optimizer_meth(game, self.search_depth)
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
