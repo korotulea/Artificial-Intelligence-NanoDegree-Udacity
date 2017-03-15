@@ -50,7 +50,7 @@ def heuristics_offensive(game, player):
     This evaluation function discussed in lecture that outputs a
     score equal to the difference in the number of moves available to 
     active player and double of avaliable moves to the opponent player:
-    own_moves - 2 * opponent moves  
+    (own_moves - 2 * opponent moves)  
     """
     if game.is_loser(player): return float("-inf")
     if game.is_winner(player): return float("inf")    
@@ -62,7 +62,7 @@ def heuristics_offensive(game, player):
 def heuristics_offensive_weighted(game, player):
     """
     This evaluation function outputs a score equal to the difference in 
-    the number of moves available to active player and double of avaliable 
+    the number of moves available to active player and double of available 
     moves to the opponent player weighted to the number of empty spaces:
     (own_moves - 2 * opponent moves ) / (num empty spaces + 1.)
     """
@@ -78,9 +78,9 @@ def heuristics_offensive_weighted(game, player):
 def heuristics_offensive_weighted_inv(game, player):
     """
     This evaluation function outputs a score equal to the difference in 
-    the number of moves available to active player and double of avaliable 
-    moves to the opponent player weighted to the number of empty spaces:
-    (own_moves - 2 * opponent moves ) / (num empty spaces + 1.)
+    the number of moves available to active player and double of available 
+    moves to the opponent player weighted to the inverse number of empty spaces:
+    (own_moves - 2 * opponent moves ) * (num empty spaces + 1.)
     """
     if game.is_loser(player): return float("-inf")
     if game.is_winner(player): return float("inf")    
@@ -202,9 +202,9 @@ def heuristics_proximity_max_weighted_inv(game, player):
 def heuristic_simple_deeper(game, player):
     """
     The evaluation function that outputs a score equal to 
-    the difference in the number of sum of all moves moves available to the
+    the difference in the number of sum of all moves available to the
     two players at one level deeper:
-    sum of own_moves and next depth - sum of opponent moves and next depth
+    (sum of own_moves at next depth) - (sum of opponent moves at next depth)
     """
     if game.is_loser(player): return float("-inf")
     if game.is_winner(player): return float("inf")
@@ -217,13 +217,10 @@ def heuristic_simple_deeper(game, player):
 
 def heuristic_offensive_deeper(game, player):
     """
-    The "Improved" evaluation function that outputs a score equal to 
-    the difference in the number of sum of all moves moves available to the
-    activetwo players at one level deeper:
     This evaluation function that outputs a score equal to the difference in 
     the number of sum of all moves available to active player at one level deeper
-    and double of avaliable moves to the opponent player at one level deeper: 
-    sum of own_moves and next depth - 2 * sum of opponent moves and next depth
+    and double of available moves to the opponent player at one level deeper: 
+    (sum of own_moves at next depth) - (2 * sum of opponent moves at next depth)
     """
     if game.is_loser(player): return float("-inf")
     if game.is_winner(player): return float("inf")
@@ -346,12 +343,16 @@ class CustomPlayer:
         if not legal_moves: return self.no_move
         # initialize no move best_move 
         best_move = self.no_move
-        # occupy the most winning positions at the beginning of the game
+        # occupy center of the board, probably the most winning positions at the beginning of the game
         if game.move_count <= 1:
-            if (3, 3) in legal_moves:
-                return (3, 3) 
+            x_tmp = int(game.width/2)
+            y_tmp = int(game.height/2)
+            if (x_tmp, y_tmp) in legal_moves:
+                return (x_tmp, y_tmp)  
+            elif (x_tmp, y_tmp - 1) in legal_moves:
+                return (x_tmp, y_tmp - 1)
             else:
-                return (3, 2)
+                return legal_moves[random.randint(0, len(legal_moves) - 1)]
          
         try:
             # The search method call (alpha beta or minimax) should happen in

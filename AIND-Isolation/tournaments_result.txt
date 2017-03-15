@@ -1,0 +1,79 @@
+BATTLE # 1 
+ID_Improved         71.43%
+heuristic_simple_weighted     66.43%
+heuristic_simple_weighted_inv     74.29%
+heuristic_simple_deeper     77.86%
+heuristics_offensive     71.43%
+heuristics_offensive_weighted     70.00%
+heuristics_offensive_weighted_inv     66.43%
+heuristic_offensive_deeper     73.57%
+heuristics_proximity_min     69.29%
+heuristics_proximity_min_weighted     68.57%
+heuristics_proximity_min_weighted_inv     60.71%
+heuristics_proximity_max     66.43%
+heuristics_proximity_max_weighted     70.00%
+heuristics_proximity_max_weighted_inv     63.57%
+
+BATTLE # 2 
+ID_Improved         68.57%
+heuristic_simple_weighted     65.00%
+heuristic_simple_weighted_inv     62.86%
+heuristic_simple_deeper     68.57%
+heuristics_offensive     67.14%
+heuristics_offensive_weighted     67.14%
+heuristics_offensive_weighted_inv     62.86%
+heuristic_offensive_deeper     72.14%
+heuristics_proximity_min     60.00%
+heuristics_proximity_min_weighted     63.57%
+heuristics_proximity_min_weighted_inv     60.71%
+heuristics_proximity_max     67.14%
+heuristics_proximity_max_weighted     70.71%
+heuristics_proximity_max_weighted_inv     67.14%
+
+BATTLE # 3 
+ID_Improved         67.14%
+heuristic_simple_weighted     70.71%
+heuristic_simple_weighted_inv     70.71%
+heuristic_simple_deeper     72.14%
+heuristics_offensive     72.14%
+heuristics_offensive_weighted     67.14%
+heuristics_offensive_weighted_inv     73.57%
+heuristic_offensive_deeper     72.14%
+heuristics_proximity_min     65.71%
+heuristics_proximity_min_weighted     60.00%
+heuristics_proximity_min_weighted_inv     55.71%
+heuristics_proximity_max     66.43%
+heuristics_proximity_max_weighted     70.71%
+heuristics_proximity_max_weighted_inv     65.00%
+
+BATTLE # 4 
+ID_Improved         68.57%
+heuristic_simple_weighted     67.14%
+heuristic_simple_weighted_inv     69.29%
+heuristic_simple_deeper     73.57%
+heuristics_offensive     72.86%
+heuristics_offensive_weighted     75.00%
+heuristics_offensive_weighted_inv     70.00%
+heuristic_offensive_deeper     77.14%
+heuristics_proximity_min     64.29%
+heuristics_proximity_min_weighted     67.14%
+heuristics_proximity_min_weighted_inv     67.86%
+heuristics_proximity_max     67.86%
+heuristics_proximity_max_weighted     70.71%
+heuristics_proximity_max_weighted_inv     65.00%
+
+BATTLE # 5 
+ID_Improved         70.00%
+heuristic_simple_weighted     68.57%
+heuristic_simple_weighted_inv     65.71%
+heuristic_simple_deeper     74.29%
+heuristics_offensive     78.57%
+heuristics_offensive_weighted     70.71%
+heuristics_offensive_weighted_inv     68.57%
+heuristic_offensive_deeper     75.71%
+heuristics_proximity_min     61.43%
+heuristics_proximity_min_weighted     62.86%
+heuristics_proximity_min_weighted_inv     62.86%
+heuristics_proximity_max     68.57%
+heuristics_proximity_max_weighted     61.43%
+heuristics_proximity_max_weighted_inv     70.71%
